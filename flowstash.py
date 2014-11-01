@@ -6,12 +6,12 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
-#flowFile = "/var/lib/netflow/2014-10-31/ft-v05.2014-10-31.165705-0500"
 flowFile = sys.argv[1]
 flowData = []
 
 esHost = "10.1.1.2"
-esIndex = 'flowstash-%(date)s' % {"date": datetime.now().strftime("%Y.%m.%d") }
+esIndex = 'flowstash-%(date)s' % {"date": datetime.utcnow().strftime("%Y.%m.%d") }
+print esIndex
 esIndexSettings = {
                    "settings": {
                      "number_of_shards": 5,
@@ -20,18 +20,19 @@ esIndexSettings = {
                   }
 
 for flow in flowtools.FlowSet( flowFile ):
+
   currentFlow = {
                  '_index': esIndex,
                  '_type': 'netflow',
                  '_source': {
-                   '@timestamp': datetime.fromtimestamp(flow.last),
+                   '@timestamp': datetime.utcfromtimestamp(flow.last),
                    'dOctets':    flow.dOctets,
                    'dPackets':   flow.dPkts,
                    'dstaddr':    flow.dstaddr,
                    'dstport':    flow.dstport,
                    'rtr_addr':   flow.exaddr,
-                   'first_pkt':  datetime.fromtimestamp(flow.first),
-                   'last_pkt':   datetime.fromtimestamp(flow.last),
+                   'first_pkt':  datetime.utcfromtimestamp(flow.first),
+                   'last_pkt':   datetime.utcfromtimestamp(flow.last),
                    'protocol':   flow.prot,
                    'src_addr':   flow.srcaddr,
                    'src_port':   flow.srcport,
