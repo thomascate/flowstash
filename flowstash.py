@@ -24,6 +24,7 @@ for flow in flowtools.FlowSet( flowFile ):
                  '_index': esIndex,
                  '_type': 'netflow',
                  '_source': {
+                   '@timestamp': datetime.fromtimestamp(flow.last),
                    'dOctets':    flow.dOctets,
                    'dPackets':   flow.dPkts,
                    'dstaddr':    flow.dstaddr,
