@@ -1,11 +1,13 @@
 #! /usr/bin/env python 
 
+import sys
 import flowtools
 from datetime import datetime
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
-flowFile = "/var/lib/netflow/2014-10-31/ft-v05.2014-10-31.165705-0500"
+#flowFile = "/var/lib/netflow/2014-10-31/ft-v05.2014-10-31.165705-0500"
+flowFile = sys.argv[1]
 flowData = []
 
 esHost = "10.1.1.2"
