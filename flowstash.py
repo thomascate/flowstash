@@ -11,7 +11,6 @@ flowData = []
 
 esHost = "10.1.1.2"
 esIndex = 'flowstash-%(date)s' % {"date": datetime.utcnow().strftime("%Y.%m.%d") }
-print esIndex
 esIndexSettings = {
                    "settings": {
                      "number_of_shards": 5,
