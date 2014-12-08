@@ -63,6 +63,13 @@ for flow in flowtools.FlowSet( flowFile ):
   #check if source address is valid
   if geoIP.country_code_by_addr(flow.srcaddr):
     countryData = geoCity.record_by_addr(flow.srcaddr)
+
+    currentFlow['_source']['src_geodata'] = []
+    if countryData['longitude']:
+      currentFlow['_source']['src_geodata'].append(countryData['longitude'])
+    if countryData['latitude']:
+      currentFlow['_source']['src_geodata'].append(countryData['latitude'])
+
     for key in countryData:
       if countryData[key]:
         keyName = "src_" + key
@@ -71,6 +78,13 @@ for flow in flowtools.FlowSet( flowFile ):
   #check if destination address is valid
   if geoIP.country_code_by_addr(flow.dstaddr):
     countryData = geoCity.record_by_addr(flow.dstaddr)
+
+    currentFlow['_source']['dst_geodata'] = []
+    if countryData['longitude']:
+      currentFlow['_source']['dst_geodata'].append(countryData['longitude'])
+    if countryData['latitude']:
+      currentFlow['_source']['dst_geodata'].append(countryData['latitude'])
+
     for key in countryData:
       if countryData[key]:
         keyName = "dst_" + key
