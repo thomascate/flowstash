@@ -51,14 +51,15 @@ for flow in flowtools.FlowSet( flowFile ):
 
   if geoIPAS.asn_by_addr(flow.dstaddr):
     splitResponse = geoIPAS.asn_by_addr(flow.dstaddr).split(' ',1)
-    currentFlow['_source']['dst_asn']      = splitResponse[0].rsplit("AS")[1]
-    currentFlow['_source']['dst_asn_name'] = splitResponse[1]
+    currentFlow['_source']['dst_asn'] = splitResponse[0].rsplit("AS")[1]
+    if len(splitResponse) > 1:
+      currentFlow['_source']['dst_asn_name'] = splitResponse[1]
 
   if geoIPAS.asn_by_addr(flow.srcaddr):
     splitResponse = geoIPAS.asn_by_addr(flow.srcaddr).split(' ',1)
-    currentFlow['_source']['src_asn']      = splitResponse[0].rsplit("AS")[1]
-    currentFlow['_source']['src_asn_name'] = splitResponse[1]
-
+    currentFlow['_source']['src_asn'] = splitResponse[0].rsplit("AS")[1]
+    if len(splitResponse) > 1:
+      currentFlow['_source']['dst_asn_name'] = splitResponse[1]
 
   #check if source address is valid
   if geoIP.country_code_by_addr(flow.srcaddr):
