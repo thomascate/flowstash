@@ -27,18 +27,28 @@ esIndexSettings = {
 
 for flow in flowtools.FlowSet( flowFile ):
 
+  if flow.first.is_integer():
+    first_pkt = datetime.utcfromtimestamp(flow.first) + ".000000"
+  else:
+    first_pkt = datetime.utcfromtimestamp(flow.first)
+
+  if flow.last.is_integer():
+    last_pkt = datetime.utcfromtimestamp(flow.last) + ".000000"
+  else:
+    last_pkt = datetime.utcfromtimestamp(flow.last)
+
   currentFlow = {
                  '_index': esIndex,
                  '_type': 'netflow',
                  '_source': {
-                   '@timestamp': datetime.utcfromtimestamp(flow.last),
+                   '@timestamp': last_pkt,
                    'dOctets':    flow.dOctets,
                    'dPackets':   flow.dPkts,
                    'dstaddr':    flow.dstaddr,
                    'dstport':    flow.dstport,
                    'rtr_addr':   flow.exaddr,
-                   'first_pkt':  datetime.utcfromtimestamp(flow.first),
-                   'last_pkt':   datetime.utcfromtimestamp(flow.last),
+                   'first_pkt':  first_pkt,
+                   'last_pkt':   last_pkt,
                    'protocol':   flow.prot,
                    'src_addr':   flow.srcaddr,
                    'src_port':   flow.srcport,
